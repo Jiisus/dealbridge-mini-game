@@ -38,7 +38,7 @@
             display: flex;
             flex-direction: column;
             justify-content: center;
-            align-items: center; /* 중앙 정렬 추가 */
+            align-items: center;
             position: relative;
             overflow: hidden;
         }
@@ -74,9 +74,21 @@
             cursor: pointer;
             width: 100%;
             transition: transform 0.2s, background 0.3s;
+            margin-bottom: 10px; /* 버튼 간 간격 추가 */
         }
         .btn:hover { background-color: var(--secondary-color); transform: translateY(-2px); }
         .btn:active { transform: translateY(0); }
+
+        /* 공유하기 버튼 스타일 (새로 추가됨) */
+        .btn-share {
+            background-color: white;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+        .btn-share:hover {
+            background-color: #eff6ff;
+            color: var(--secondary-color);
+        }
 
         /* 2. 질문 화면 */
         #quiz-screen { display: none; width: 100%; }
@@ -103,7 +115,7 @@
         .option-btn:hover { border-color: var(--primary-color); background: #eff6ff; color: var(--primary-color); font-weight: 600; }
 
         /* 3. 결과 화면 */
-        #result-screen { display: none; text-align: center; width: 100%; animation: fadeIn 0.5s; }
+        #result-screen { display: none; text-align: center; width: 100%; animation: fadeIn 0.5s; padding-bottom: 20px; }
         .result-badge { 
             display: inline-block; 
             background: #eff6ff; 
@@ -128,7 +140,7 @@
         .solution-text { font-size: 15px; line-height: 1.6; }
         .highlight { color: var(--highlight-color); font-weight: 900; background: #fff1f2; padding: 2px 5px; border-radius: 4px; }
 
-        .cta-section { background: #1e293b; padding: 20px; border-radius: 15px; color: white; margin-top: 20px; }
+        .cta-section { background: #1e293b; padding: 20px; border-radius: 15px; color: white; margin-top: 20px; margin-bottom: 20px; }
         .cta-text { font-size: 14px; margin-bottom: 15px; line-height: 1.5; opacity: 0.9; }
         .cta-btn {
             background: var(--highlight-color);
@@ -164,22 +176,15 @@
         <!-- 🤖 귀여운 블루 캐릭터 (SVG) -->
         <div class="mascot-wrapper" style="margin: 0 auto 20px auto;">
             <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                <!-- 몸통 -->
                 <circle cx="100" cy="100" r="90" fill="#2563eb" />
-                <!-- 광택(입체감) -->
                 <ellipse cx="70" cy="60" rx="20" ry="10" fill="white" opacity="0.2" transform="rotate(-45 70 60)" />
-                <!-- 왼쪽 눈 -->
                 <circle cx="65" cy="90" r="12" fill="white" />
                 <circle cx="67" cy="88" r="4" fill="#1e40af" />
-                <!-- 오른쪽 눈 -->
                 <circle cx="135" cy="90" r="12" fill="white" />
                 <circle cx="133" cy="88" r="4" fill="#1e40af" />
-                <!-- 입 (웃는 모습) -->
                 <path d="M 80 120 Q 100 135 120 120" stroke="white" stroke-width="6" fill="none" stroke-linecap="round" />
-                <!-- 볼터치 -->
                 <circle cx="50" cy="110" r="8" fill="#93c5fd" opacity="0.6" />
                 <circle cx="150" cy="110" r="8" fill="#93c5fd" opacity="0.6" />
-                <!-- 안테나 -->
                 <line x1="100" y1="10" x2="100" y2="0" stroke="#2563eb" stroke-width="4" />
                 <circle cx="100" cy="10" r="8" fill="#ff4757" />
             </svg>
@@ -208,15 +213,12 @@
 
     <!-- 3. 결과 화면 -->
     <div id="result-screen">
-        <!-- 결과 화면에도 캐릭터 등장 -->
         <div class="mascot-wrapper" style="margin: 0 auto 15px auto; width: 80px; height: 80px;">
             <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
                 <circle cx="100" cy="100" r="90" fill="#2563eb" />
                 <circle cx="65" cy="90" r="12" fill="white" />
                 <circle cx="135" cy="90" r="12" fill="white" />
-                <!-- 윙크하는 표정으로 변경 -->
                 <path d="M 135 85 L 145 95 M 145 85 L 135 95" stroke="#1e40af" stroke-width="3" style="display:none;" /> 
-                
                 <path d="M 70 120 Q 100 140 130 120" stroke="white" stroke-width="6" fill="none" stroke-linecap="round" />
                 <circle cx="50" cy="110" r="8" fill="#93c5fd" opacity="0.6" />
                 <circle cx="150" cy="110" r="8" fill="#93c5fd" opacity="0.6" />
@@ -241,13 +243,17 @@
             </p>
             <a href="https://dealbridgeforyou.imweb.me" target="_blank" class="cta-btn">Dealbridge 무료 체험해보기 ▶</a>
         </div>
-        <br>
-        <button class="btn" onclick="location.reload()" style="background:#94a3b8; font-size:14px;">테스트 다시하기</button>
+        
+        <!-- 공유하기 버튼 (추가됨) -->
+        <button class="btn btn-share" onclick="shareTest()">🔗 친구에게 테스트 공유하기</button>
+        
+        <!-- 다시하기 버튼 -->
+        <button class="btn" onclick="location.reload()" style="background:#94a3b8; font-size:14px; margin-top:5px;">테스트 다시하기</button>
     </div>
 </div>
 
 <script>
-    // 질문 데이터 (A, B, C, D 순서대로)
+    // 질문 데이터
     const questions = [
         {
             q: "새로운 잠재 고객 리스트(DB) 확보가 어려울 때, 가장 먼저 드는 생각은?",
@@ -371,9 +377,9 @@
         document.getElementById('quiz-screen').style.display = 'none';
         document.getElementById('result-screen').style.display = 'block';
 
-        // 점수 계산 (최대값 찾기)
+        // 점수 계산
         let maxScore = 0;
-        let resultType = 'A'; // 기본값
+        let resultType = 'A';
 
         for (const type in scores) {
             if (scores[type] > maxScore) {
@@ -388,6 +394,37 @@
         document.getElementById('result-title').innerHTML = resultData.title;
         document.getElementById('result-desc').innerText = resultData.desc;
         document.getElementById('result-solution').innerHTML = resultData.solution;
+    }
+
+    // [NEW] 공유하기 기능 함수
+    async function shareTest() {
+        const url = window.location.href; // 현재 페이지 주소
+        const title = 'B2B 영업 효율 레벨 진단';
+        const text = '나의 영업 성향은 무엇일까? 무료 진단 테스트 해보세요!';
+
+        // 1. 모바일 등에서 네이티브 공유하기 (Navigator Share API)
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: title,
+                    text: text,
+                    url: url
+                });
+                return; // 공유 성공 시 함수 종료
+            } catch (err) {
+                // 사용자가 취소했거나 에러가 난 경우, 아래 클립보드 복사로 넘어감
+                console.log('Share failed/cancelled', err);
+            }
+        }
+
+        // 2. PC 등에서 링크 클립보드 복사 (Fallback)
+        try {
+            await navigator.clipboard.writeText(url);
+            alert('링크가 복사되었습니다! 친구에게 공유해보세요.');
+        } catch (err) {
+            // 복사 실패 시 (보안 설정 등으로 인해)
+            prompt('이 링크를 복사해서 공유하세요:', url);
+        }
     }
 </script>
 
