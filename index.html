@@ -16,12 +16,7 @@
 
         * { box-sizing: border-box; font-family: 'Pretendard', 'Malgun Gothic', sans-serif; }
         
-        body
-        <!-- 일본어판으로 가는 버튼 -->
-<a href="./jp/" style="position:fixed; top:10px; right:10px; padding:10px; background:white; border:1px solid #ccc; border-radius:5px; text-decoration:none;">
-    🇯🇵 日本語
-</a>
-        {
+        body {
             margin: 0;
             padding: 0;
             background-color: var(--bg-color);
@@ -84,6 +79,27 @@
         .btn:hover { background-color: var(--secondary-color); transform: translateY(-2px); }
         .btn:active { transform: translateY(0); }
 
+        /* 언어 변경 버튼 스타일 */
+.lang-btn {
+    position: absolute; /* 카드 안에서 위치를 자유롭게 잡음 */
+    top: 15px;
+    right: 15px;
+    background-color: #f1f5f9;
+    color: #475569;
+    padding: 8px 12px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: bold;
+    transition: all 0.2s;
+    z-index: 100; /* 다른 요소보다 위에 오도록 */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.lang-btn:hover {
+    background-color: #e2e8f0;
+    transform: translateY(-1px);
+}
+        
         /* 공유하기 버튼 스타일 (새로 추가됨) */
         .btn-share {
             background-color: white;
@@ -435,4 +451,5 @@
 
 </body>
 </html>
+
 
