@@ -79,28 +79,7 @@
         .btn:hover { background-color: var(--secondary-color); transform: translateY(-2px); }
         .btn:active { transform: translateY(0); }
 
-        /* 언어 변경 버튼 스타일 */
-.lang-btn {
-    position: absolute; /* 카드 안에서 위치를 자유롭게 잡음 */
-    top: 15px;
-    right: 15px;
-    background-color: #f1f5f9;
-    color: #475569;
-    padding: 8px 12px;
-    border-radius: 20px;
-    text-decoration: none;
-    font-size: 12px;
-    font-weight: bold;
-    transition: all 0.2s;
-    z-index: 100; /* 다른 요소보다 위에 오도록 */
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-}
-.lang-btn:hover {
-    background-color: #e2e8f0;
-    transform: translateY(-1px);
-}
-        
-        /* 공유하기 버튼 스타일 (새로 추가됨) */
+        /* 공유하기 버튼 스타일 */
         .btn-share {
             background-color: white;
             color: var(--primary-color);
@@ -174,6 +153,10 @@
             font-size: 16px;
             animation: pulse 2s infinite;
             transition: transform 0.2s;
+            cursor: pointer;
+            border: none;
+            width: 100%;
+            text-align: center;
         }
         .cta-btn:hover { transform: scale(1.02); }
 
@@ -192,15 +175,8 @@
 <body>
 
 <div class="container">
-
-    <!-- 일본어판으로 가는 버튼 -->
-<a href="./jp/" style="position:fixed; top:10px; right:10px; padding:10px; background:white; border:1px solid #ccc; border-radius:5px; text-decoration:none;">
-    🇯🇵 日本語
-</a>
-
     <!-- 1. 시작 화면 -->
     <div id="start-screen">
-        <!-- 🤖 귀여운 블루 캐릭터 (SVG) -->
         <div class="mascot-wrapper" style="margin: 0 auto 20px auto;">
             <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
                 <circle cx="100" cy="100" r="90" fill="#2563eb" />
@@ -233,9 +209,7 @@
         </div>
         <div class="question-number">Q<span id="q-num">1</span></div>
         <div class="question-text" id="q-text">질문 내용이 여기에 표시됩니다.</div>
-        <div id="options-container">
-            <!-- 버튼들이 자바스크립트로 생성됨 -->
-        </div>
+        <div id="options-container"></div>
     </div>
 
     <!-- 3. 결과 화면 -->
@@ -245,7 +219,6 @@
                 <circle cx="100" cy="100" r="90" fill="#2563eb" />
                 <circle cx="65" cy="90" r="12" fill="white" />
                 <circle cx="135" cy="90" r="12" fill="white" />
-                <path d="M 135 85 L 145 95 M 145 85 L 135 95" stroke="#1e40af" stroke-width="3" style="display:none;" /> 
                 <path d="M 70 120 Q 100 140 130 120" stroke="white" stroke-width="6" fill="none" stroke-linecap="round" />
                 <circle cx="50" cy="110" r="8" fill="#93c5fd" opacity="0.6" />
                 <circle cx="150" cy="110" r="8" fill="#93c5fd" opacity="0.6" />
@@ -268,19 +241,45 @@
                 가장 효율적인 파트너 매칭을 경험해보세요."<br>
                 <span style="color:#fbbf24; font-weight:bold;">★ 현재 베타 기간 모든 매칭 [무료] ★</span>
             </p>
-            <a href="https://dealbridgeforyou.imweb.me" target="_blank" class="cta-btn">Dealbridge 무료 체험해보기 ▶</a>
+            <!-- [데이터 수집을 위해 버튼 클릭 이벤트 추가] -->
+            <button onclick="handleCtaClick()" class="cta-btn">Dealbridge 무료 체험해보기 ▶</button>
         </div>
         
-        <!-- 공유하기 버튼 (추가됨) -->
         <button class="btn btn-share" onclick="shareTest()">🔗 친구에게 테스트 공유하기</button>
-        
-        <!-- 다시하기 버튼 -->
         <button class="btn" onclick="location.reload()" style="background:#94a3b8; font-size:14px; margin-top:5px;">테스트 다시하기</button>
     </div>
 </div>
 
 <script>
-    // 질문 데이터
+    /* --- [데이터 수집 관련 설정] --- */
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbxKcHmFKfM741OdZxN7mTVeKIY0VEAehU0aorJlAxUzPB41oZ15Ph5ecbAw1tabcpie/exec";
+    let userChoices = []; // 유저가 선택한 타입들을 담을 배열
+    let finalResultType = ""; // 최종 타입 (A, B, C, D)
+
+    function sendDataToSheet(isMoved) {
+        const payload = {
+            lang: "KR", // 한국어판 표시
+            choices: userChoices.join(', '), 
+            result: finalResultType,
+            movedToWeb: isMoved
+        };
+
+        fetch(GAS_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+    }
+
+    function handleCtaClick() {
+        sendDataToSheet("예"); // 이동 여부를 "예"로 해서 데이터 전송
+        setTimeout(() => {
+            window.open("https://dealbridgeforyou.imweb.me", "_blank");
+        }, 400); 
+    }
+    /* ---------------------------- */
+
     const questions = [
         {
             q: "새로운 잠재 고객 리스트(DB) 확보가 어려울 때, 가장 먼저 드는 생각은?",
@@ -334,7 +333,6 @@
         }
     ];
 
-    // 결과 데이터
     const results = {
         "A": {
             title: "🥇 The Hidden Gem<br>(내면형 잠재 전문가)",
@@ -368,18 +366,12 @@
     }
 
     function updateQuestion() {
-        // 진행바 업데이트
         const progress = ((currentStep) / questions.length) * 100;
         document.getElementById('progress-bar').style.width = `${progress}%`;
-        
-        // 문제 표시
         document.getElementById('q-num').innerText = currentStep + 1;
         document.getElementById('q-text').innerText = questions[currentStep].q;
-        
         const optionsContainer = document.getElementById('options-container');
         optionsContainer.innerHTML = '';
-
-        // 보기 버튼 생성
         questions[currentStep].a.forEach((answer, index) => {
             const btn = document.createElement('button');
             btn.className = 'option-btn';
@@ -390,9 +382,9 @@
     }
 
     function selectOption(type) {
+        userChoices.push(type); // 유저의 선택 기록
         scores[type]++;
         currentStep++;
-
         if (currentStep < questions.length) {
             updateQuestion();
         } else {
@@ -403,62 +395,40 @@
     function showResult() {
         document.getElementById('quiz-screen').style.display = 'none';
         document.getElementById('result-screen').style.display = 'block';
-
-        // 점수 계산
         let maxScore = 0;
         let resultType = 'A';
-
         for (const type in scores) {
             if (scores[type] > maxScore) {
                 maxScore = scores[type];
                 resultType = type;
             }
         }
-
+        finalResultType = resultType; // 최종 결과 저장
         const resultData = results[resultType];
-
         document.getElementById('result-badge').innerText = `TYPE ${resultType}`;
         document.getElementById('result-title').innerHTML = resultData.title;
         document.getElementById('result-desc').innerText = resultData.desc;
         document.getElementById('result-solution').innerHTML = resultData.solution;
+
+        sendDataToSheet("아니오"); // 결과 화면 진입 시 1차 데이터 전송
     }
 
-    // [NEW] 공유하기 기능 함수
     async function shareTest() {
-        const url = window.location.href; // 현재 페이지 주소
+        const url = window.location.href;
         const title = 'B2B 영업 효율 레벨 진단';
         const text = '나의 영업 성향은 무엇일까? 무료 진단 테스트 해보세요!';
-
-        // 1. 모바일 등에서 네이티브 공유하기 (Navigator Share API)
         if (navigator.share) {
             try {
-                await navigator.share({
-                    title: title,
-                    text: text,
-                    url: url
-                });
-                return; // 공유 성공 시 함수 종료
-            } catch (err) {
-                // 사용자가 취소했거나 에러가 난 경우, 아래 클립보드 복사로 넘어감
-                console.log('Share failed/cancelled', err);
-            }
+                await navigator.share({ title: title, text: text, url: url });
+                return;
+            } catch (err) {}
         }
-
-        // 2. PC 등에서 링크 클립보드 복사 (Fallback)
         try {
             await navigator.clipboard.writeText(url);
-            alert('링크가 복사되었습니다! 친구에게 공유해보세요.');
-        } catch (err) {
-            // 복사 실패 시 (보안 설정 등으로 인해)
-            prompt('이 링크를 복사해서 공유하세요:', url);
-        }
+            alert('링크가 복사되었습니다!');
+        } catch (err) { prompt('이 링크를 복사하세요:', url); }
     }
 </script>
 
 </body>
 </html>
-
-
-
-
-
