@@ -4,14 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>B2B 영업 효율 레벨 진단</title>
+    <!-- SNS 공유를 위한 메타 태그 -->
+    <meta property="og:title" content="B2B 영업 효율 레벨 진단">
+    <meta property="og:description" content="나의 영업 타입은? 무료 진단 테스트를 해보세요!">
     <style>
-        /* 기본 스타일 설정 */
         :root {
-            --primary-color: #2563eb; /* 메인 블루 */
+            --primary-color: #2563eb;
             --secondary-color: #1e40af;
             --bg-color: #f3f4f6;
             --text-color: #1f2937;
-            --highlight-color: #ff4757; /* 강조 레드 */
+            --highlight-color: #ff4757;
         }
 
         * { box-sizing: border-box; font-family: 'Pretendard', 'Malgun Gothic', sans-serif; }
@@ -43,7 +45,6 @@
             overflow: hidden;
         }
 
-        /* 캐릭터 스타일 */
         .mascot-wrapper {
             width: 120px;
             height: 120px;
@@ -51,14 +52,12 @@
             animation: float 3s ease-in-out infinite;
         }
         
-        /* 둥둥 떠다니는 애니메이션 */
         @keyframes float {
             0% { transform: translateY(0px); }
             50% { transform: translateY(-10px); }
             100% { transform: translateY(0px); }
         }
 
-        /* 1. 시작 화면 */
         #start-screen { text-align: center; width: 100%; }
         .main-title { font-size: 26px; font-weight: 800; margin-bottom: 15px; color: var(--primary-color); line-height: 1.4; }
         .sub-desc { font-size: 16px; color: #666; margin-bottom: 30px; line-height: 1.6; }
@@ -74,29 +73,23 @@
             cursor: pointer;
             width: 100%;
             transition: transform 0.2s, background 0.3s;
-            margin-bottom: 10px; /* 버튼 간 간격 추가 */
+            margin-bottom: 10px;
         }
         .btn:hover { background-color: var(--secondary-color); transform: translateY(-2px); }
-        .btn:active { transform: translateY(0); }
 
-        /* 공유하기 버튼 스타일 */
         .btn-share {
             background-color: white;
             color: var(--primary-color);
             border: 2px solid var(--primary-color);
         }
-        .btn-share:hover {
-            background-color: #eff6ff;
-            color: var(--secondary-color);
-        }
+        .btn-share:hover { background-color: #eff6ff; }
 
-        /* 2. 질문 화면 */
         #quiz-screen { display: none; width: 100%; }
         .progress-bar-container { width: 100%; height: 8px; background: #e5e7eb; border-radius: 5px; margin-bottom: 30px; }
         .progress-bar { height: 100%; background: var(--primary-color); width: 0%; border-radius: 5px; transition: width 0.3s; }
         
         .question-number { color: var(--primary-color); font-weight: bold; font-size: 18px; margin-bottom: 10px; }
-        .question-text { font-size: 20px; font-weight: 700; margin-bottom: 30px; line-height: 1.4; }
+        .question-text { font-size: 20px; font-weight: 700; margin-bottom: 30px; line-height: 1.4; text-align: center; }
         
         .option-btn {
             display: block;
@@ -114,7 +107,6 @@
         }
         .option-btn:hover { border-color: var(--primary-color); background: #eff6ff; color: var(--primary-color); font-weight: 600; }
 
-        /* 3. 결과 화면 */
         #result-screen { display: none; text-align: center; width: 100%; animation: fadeIn 0.5s; padding-bottom: 20px; }
         .result-badge { 
             display: inline-block; 
@@ -158,17 +150,12 @@
             width: 100%;
             text-align: center;
         }
-        .cta-btn:hover { transform: scale(1.02); }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(255, 71, 87, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(255, 71, 87, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 71, 87, 0); } }
 
-        /* 모바일 대응 */
         @media (max-width: 480px) {
             .container { height: 100vh; border-radius: 0; padding: 20px; }
-            .main-title { font-size: 22px; }
-            .question-text { font-size: 18px; }
-            .mascot-wrapper { width: 100px; height: 100px; }
         }
     </style>
 </head>
@@ -195,9 +182,9 @@
 
         <h1 class="main-title">당신의 영업 효율 레벨은?<br><span style="font-size:0.8em; font-weight:500;">(책상에서 승리하는 B2B 영업 유형 진단)</span></h1>
         <p class="sub-desc">
-            나는 발로 뛰는 유형일까? 전략가일까?<br>
-            10가지 질문으로 알아보는 나의 B2B 영업 스타일!<br>
-            내 유형에 딱 맞는 <b>무료 솔루션</b>까지 확인하세요.
+            나는 발로 뛰는 유형일까? 아니면 전략에 강할까?<br>
+            10개의 질문으로 알아보는 나의 B2B 영업 스타일!<br>
+            내 유형에 딱 맞는 <b>무료 솔루션</b>까지 확인해 보세요.
         </p>
         <button class="btn" onclick="startQuiz()">진단 시작하기</button>
     </div>
@@ -208,7 +195,7 @@
             <div class="progress-bar" id="progress-bar"></div>
         </div>
         <div class="question-number">Q<span id="q-num">1</span></div>
-        <div class="question-text" id="q-text">질문 내용이 여기에 표시됩니다.</div>
+        <div class="question-text" id="q-text"></div>
         <div id="options-container"></div>
     </div>
 
@@ -226,59 +213,59 @@
             </svg>
         </div>
 
-        <div class="result-badge" id="result-badge">유형 결과</div>
-        <h2 class="result-title" id="result-title">결과 제목</h2>
-        <p class="result-desc" id="result-desc">결과 설명</p>
+        <div class="result-badge" id="result-badge"></div>
+        <h2 class="result-title" id="result-title"></h2>
+        <p class="result-desc" id="result-desc"></p>
         
         <div class="solution-box">
             <div class="solution-title">💡 DealBridge 맞춤 솔루션</div>
-            <div class="solution-text" id="result-solution">솔루션 내용</div>
+            <div class="solution-text" id="result-solution"></div>
         </div>
 
         <div class="cta-section">
             <p class="cta-text">
-                "당신의 영업 유형을 확인하셨나요?<br>
-                가장 효율적인 파트너 매칭을 경험해보세요."<br>
-                <span style="color:#fbbf24; font-weight:bold;">★ 현재 베타 기간 모든 매칭 [무료] ★</span>
+                "당신의 영업 스타일을 확인하셨나요?<br>
+                가장 효율적인 파트너 매칭을 경험해 보세요!"<br>
+                <span style="color:#fbbf24; font-weight:bold;">★ 현재 BETA 기간 모든 매칭 서비스【무료】 ★</span>
             </p>
-            <!-- [데이터 수집을 위해 버튼 클릭 이벤트 추가] -->
-            <button onclick="handleCtaClick()" class="cta-btn">Dealbridge 무료 체험해보기 ▶</button>
+            <button onclick="handleCtaClick()" class="cta-btn">Dealbridge 무료 체험하기 ▶</button>
         </div>
         
+        <!-- 공유하기 버튼 -->
         <button class="btn btn-share" onclick="shareTest()">🔗 친구에게 테스트 공유하기</button>
+        
+        <!-- 다시하기 버튼 -->
         <button class="btn" onclick="location.reload()" style="background:#94a3b8; font-size:14px; margin-top:5px;">테스트 다시하기</button>
     </div>
 </div>
 
 <script>
-    /* --- [데이터 수집 관련 설정] --- */
-    const GAS_URL = "https://script.google.com/macros/s/AKfycbxKcHmFKfM741OdZxN7mTVeKIY0VEAehU0aorJlAxUzPB41oZ15Ph5ecbAw1tabcpie/exec";
-    let userChoices = []; // 유저가 선택한 타입들을 담을 배열
-    let finalResultType = ""; // 최종 타입 (A, B, C, D)
+    /* --- [데이터 수집 설정] --- */
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbxQ2tUM6TzS7mILH9sWN26NhU6EAHXd5RvuVxHYek9YUTQJf7F6voR3BZ2R1tU5IIEr/exec";
+    let userChoices = []; 
+    let finalResultType = "";
 
     function sendDataToSheet(isMoved) {
-        const payload = {
-            lang: "KR", // 한국어판 표시
-            choices: userChoices.join(', '), 
-            result: finalResultType,
-            movedToWeb: isMoved
-        };
-
         fetch(GAS_URL, {
             method: 'POST',
             mode: 'no-cors',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
+            body: JSON.stringify({
+                lang: "KR",
+                choices: userChoices.join(', '),
+                result: finalResultType,
+                movedToWeb: isMoved
+            })
         });
     }
 
     function handleCtaClick() {
-        sendDataToSheet("예"); // 이동 여부를 "예"로 해서 데이터 전송
+        sendDataToSheet("예");
         setTimeout(() => {
             window.open("https://dealbridgeforyou.imweb.me", "_blank");
-        }, 400); 
+        }, 400);
     }
-    /* ---------------------------- */
+    /* ----------------------- */
 
     const questions = [
         {
@@ -340,17 +327,17 @@
             solution: "DealBridge는 귀사의 분석을 파트너 연결로 자동 전환합니다. <span class='highlight'>현재 베타 기간 동안 모든 매칭 서비스가 무료</span>입니다. 발로 뛰지 않고도 성과를 내세요."
         },
         "B": {
-            title: "🥈 The Resource Desert Runner<br>(자원 부족 마라토너)",
+            title: "🥈 리소스 부족 마라토너<br>(Resource Desert Runner)",
             desc: "능력은 충분하지만, 핵심 자원(DB, 시간)이 부족해 리소스를 찾는 데 에너지를 낭비하고 계시네요. 당신에게 필요한 것은 '즉시 사용 가능한' 파트너 정보입니다.",
             solution: "DealBridge는 귀사의 딜에 맞는 맞춤 파트너를 즉시 소개합니다. <span class='highlight'>베타 기간에는 일체의 비용 없이</span> 리소스 탐색 시간을 줄이고 핵심 계약 협상에 집중하세요."
         },
         "C": {
-            title: "🥉 The Internal Bureaucrat<br>(내부 보고서 마스터)",
+            title: "🥉 사내 리포트 마스터<br>(Internal Bureaucrat)",
             desc: "내부 규정 준수와 프로세스를 중요시하지만, 이로 인해 외부 활동이 제약받고 있습니다. 보고서 작성 시간을 줄이고 검증된 파트너를 만나는 것이 급선무입니다.",
             solution: "DealBridge의 객관적 파트너 검증 시스템은 내부 보고의 효율을 높입니다. <span class='highlight'>지금 등록하면 비용 부담 없이</span> '이미 심사된 딜'로 결재 부담을 최소화할 수 있습니다."
         },
         "D": {
-            title: "🏅 The Overly Cautious Strategist<br>(지나치게 신중한 전략가)",
+            title: "🏅 신중한 전략가<br>(Overly Cautious Strategist)",
             desc: "실패와 리스크에 대한 두려움으로 인해 결정이 늦어지는 경향이 있습니다. 신중함은 장점이지만, 기회를 놓치지 않으려면 안전장치가 있는 환경이 필요합니다.",
             solution: "DealBridge는 익명 기반 딜 등록으로 리스크를 최소화합니다. <span class='highlight'>베타 서비스 기간 동안 무료</span>로 안전하게 파이프라인을 구축하고, 신중한 전략에 속도를 더하세요."
         }
@@ -370,65 +357,45 @@
         document.getElementById('progress-bar').style.width = `${progress}%`;
         document.getElementById('q-num').innerText = currentStep + 1;
         document.getElementById('q-text').innerText = questions[currentStep].q;
-        const optionsContainer = document.getElementById('options-container');
-        optionsContainer.innerHTML = '';
-        questions[currentStep].a.forEach((answer, index) => {
+        const oContainer = document.getElementById('options-container');
+        oContainer.innerHTML = '';
+        questions[currentStep].a.forEach((ans, i) => {
             const btn = document.createElement('button');
             btn.className = 'option-btn';
-            btn.innerText = answer;
-            btn.onclick = () => selectOption(questions[currentStep].types[index]);
-            optionsContainer.appendChild(btn);
+            btn.innerText = ans;
+            btn.onclick = () => {
+                userChoices.push(questions[currentStep].types[i]);
+                scores[questions[currentStep].types[i]]++;
+                currentStep++;
+                if (currentStep < questions.length) updateQuestion();
+                else showResult();
+            };
+            oContainer.appendChild(btn);
         });
-    }
-
-    function selectOption(type) {
-        userChoices.push(type); // 유저의 선택 기록
-        scores[type]++;
-        currentStep++;
-        if (currentStep < questions.length) {
-            updateQuestion();
-        } else {
-            showResult();
-        }
     }
 
     function showResult() {
         document.getElementById('quiz-screen').style.display = 'none';
         document.getElementById('result-screen').style.display = 'block';
-        let maxScore = 0;
-        let resultType = 'A';
-        for (const type in scores) {
-            if (scores[type] > maxScore) {
-                maxScore = scores[type];
-                resultType = type;
-            }
-        }
-        finalResultType = resultType; // 최종 결과 저장
-        const resultData = results[resultType];
-        document.getElementById('result-badge').innerText = `TYPE ${resultType}`;
-        document.getElementById('result-title').innerHTML = resultData.title;
-        document.getElementById('result-desc').innerText = resultData.desc;
-        document.getElementById('result-solution').innerHTML = resultData.solution;
+        let maxS = 0; let resT = 'A';
+        for (const t in scores) { if (scores[t] > maxS) { maxS = scores[t]; resT = t; } }
+        finalResultType = resT;
+        const resD = results[resT];
+        document.getElementById('result-badge').innerText = `TYPE ${resT}`;
+        document.getElementById('result-title').innerHTML = resD.title;
+        document.getElementById('result-desc').innerText = resD.desc;
+        document.getElementById('result-solution').innerHTML = resD.solution;
 
-        sendDataToSheet("아니오"); // 결과 화면 진입 시 1차 데이터 전송
+        sendDataToSheet("아니오"); // 결과 화면 도달 시 전송
     }
 
     async function shareTest() {
         const url = window.location.href;
-        const title = 'B2B 영업 효율 레벨 진단';
-        const text = '나의 영업 성향은 무엇일까? 무료 진단 테스트 해보세요!';
         if (navigator.share) {
-            try {
-                await navigator.share({ title: title, text: text, url: url });
-                return;
-            } catch (err) {}
+            try { await navigator.share({ title: 'B2B 영업 효율 레벨 진단', text: '나의 영업 성향은 무엇일까? 무료 진단 테스트 해보세요!', url: url }); return; } catch (err) {}
         }
-        try {
-            await navigator.clipboard.writeText(url);
-            alert('링크가 복사되었습니다!');
-        } catch (err) { prompt('이 링크를 복사하세요:', url); }
+        navigator.clipboard.writeText(url).then(() => alert('링크가 복사되었습니다! 친구에게 공유해 보세요.'));
     }
 </script>
-
 </body>
 </html>
